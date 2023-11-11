@@ -1,4 +1,9 @@
+{-# LANGUAGE DeriveGeneric, TypeOperators, TypeFamilies #-}
+
 module GCLParser.GCLDatatype where
+
+import Data.MemoTrie
+import GHC.Generics (Generic)
     
 -- import Data.List
 
@@ -91,13 +96,26 @@ data Expr
     | Cond               Expr   Expr   Expr
     | NewStore           Expr
     | Dereference        String
-    deriving (Eq, Ord)
+    deriving (Eq, Ord, Generic)
+
+instance HasTrie Expr where
+    newtype (Expr :->: b) = ExprTrie { unExprTrie :: Reg Expr :->: b }
+    trie = trieGeneric ExprTrie
+    untrie = untrieGeneric unExprTrie
+    enumerate = enumerateGeneric unExprTrie
     
 data BinOp = And | Or | Implication 
     | LessThan | LessThanEqual | GreaterThan | GreaterThanEqual | Equal
     | Minus | Plus | Multiply | Divide
     | Alias
-    deriving (Eq, Ord)
+    deriving (Eq, Ord, Generic)
+
+
+instance HasTrie BinOp where
+  newtype (BinOp :->: b) = BinOpTrie { unBinOpTrie :: Reg BinOp :->: b }
+  trie = trieGeneric BinOpTrie
+  untrie = untrieGeneric unBinOpTrie
+  enumerate = enumerateGeneric unBinOpTrie
 
 opAnd :: Expr -> Expr -> Expr
 opAnd = BinopExpr And

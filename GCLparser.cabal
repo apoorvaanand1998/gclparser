@@ -28,6 +28,7 @@ Library
                      , containers
                      , optparse-applicative
                      , pretty
+                     , MemoTrie
   hs-source-dirs:      src
   build-tools:         happy, alex
   default-language:    Haskell2010
