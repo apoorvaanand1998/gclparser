@@ -91,13 +91,13 @@ data Expr
     | Cond               Expr   Expr   Expr
     | NewStore           Expr
     | Dereference        String
-    deriving (Eq) 
+    deriving (Eq, Ord)
     
 data BinOp = And | Or | Implication 
     | LessThan | LessThanEqual | GreaterThan | GreaterThanEqual | Equal
     | Minus | Plus | Multiply | Divide
     | Alias
-    deriving (Eq)
+    deriving (Eq, Ord)
 
 opAnd :: Expr -> Expr -> Expr
 opAnd = BinopExpr And
